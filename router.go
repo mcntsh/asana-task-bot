@@ -16,8 +16,8 @@ var (
 	)
 )
 
-func Router() (r http.Handler) {
-	r = mux.NewRouter()
+func Router() http.Handler {
+	r := mux.NewRouter()
 
 	// REST Handlers
 
@@ -27,5 +27,5 @@ func Router() (r http.Handler) {
 
 	r.PathPrefix("/").Handler(http.DefaultServeMux)
 
-	return
+	return r
 }
