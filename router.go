@@ -12,6 +12,7 @@ var (
 	appChain = alice.New(
 		middleware.Logging,
 		middleware.Cors,
+		middleware.SlackSecret,
 		middleware.SlackAPI,
 	)
 )

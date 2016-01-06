@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"fmt"
-	// "github.com/gorilla/context"
+	"github.com/gorilla/context"
 	// "github.com/nlopes/slack"
+	"fmt"
 	"net/http"
 )
 
@@ -19,5 +19,6 @@ func RecieveWebhook(w http.ResponseWriter, r *http.Request) {
 	// 	fmt.Printf("ID: %s, Name: %s\n", group.ID, group.Name)
 	// }
 
-	fmt.Printf("%v", r.Body)
+	w.Header().Set("X-Hook-Secret", fmt.Sprintf("%v", context.Get(r, "slack-secret")))
+	Respond(http.StatusOK, "Done.", w)
 }
