@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
-	"asana-task-bot/Godeps/_workspace/src/github.com/rs/cors"
-	"asana-task-bot/Godeps/_workspace/src/github.com/rs/xhandler"
-	"asana-task-bot/Godeps/_workspace/src/golang.org/x/net/context"
+	"github.com/rs/cors"
+	"github.com/rs/xhandler"
+	"golang.org/x/net/context"
 )
 
 func main() {

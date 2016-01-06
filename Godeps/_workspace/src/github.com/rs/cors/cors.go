@@ -27,8 +27,8 @@ import (
 	"strconv"
 	"strings"
 
-	"asana-task-bot/Godeps/_workspace/src/github.com/rs/xhandler"
-	"asana-task-bot/Godeps/_workspace/src/golang.org/x/net/context"
+	"github.com/rs/xhandler"
+	"golang.org/x/net/context"
 )
 
 // Options is a configuration container to setup the CORS middleware.

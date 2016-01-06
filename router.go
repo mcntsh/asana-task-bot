@@ -1,10 +1,10 @@
 package main
 
 import (
-	"asana-task-bot/Godeps/_workspace/src/github.com/gorilla/mux"
-	"asana-task-bot/Godeps/_workspace/src/github.com/justinas/alice"
 	"asana-task-bot/middleware"
 	"asana-task-bot/routes"
+	"github.com/gorilla/mux"
+	"github.com/justinas/alice"
 	"net/http"
 )
 

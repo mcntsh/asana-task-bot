@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"asana-task-bot/Godeps/_workspace/src/github.com/justinas/alice"
-	"asana-task-bot/Godeps/_workspace/src/github.com/rs/cors"
+	"github.com/justinas/alice"
+	"github.com/rs/cors"
 )
 
 func main() {

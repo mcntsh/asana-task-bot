@@ -1,9 +1,9 @@
 package main
 
 import (
-	"asana-task-bot/Godeps/_workspace/src/github.com/rs/cors"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
+	"github.com/rs/cors"
 )
 
 func main() {
