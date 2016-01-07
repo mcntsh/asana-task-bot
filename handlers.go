@@ -7,15 +7,7 @@ import (
 )
 
 func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
-	// slackUser := r.URL.Query().Get("slack_user")
-
-	// api := slack.New(config.SlackAPIKey)
-	// err := api.ChatPostMessage(slackUser, "Something happe1ned on Asana!", nil)
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	w.Write([]byte("NOT OK"))
-	// }
-
+	slackUser := r.URL.Query().Get("slack_user")
 	payload := &Payload{}
 
 	err := json.NewDecoder(r.Body).Decode(&payload)
@@ -23,7 +15,7 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	payload.RelayToSlack()
+	payload.RelayToSlack(slackUser)
 
 	// Set the response
 	w.WriteHeader(http.StatusOK)
