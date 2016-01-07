@@ -61,6 +61,7 @@ func GetAsanaTask(id int) (*asana.Task, error) {
 
 	err := asanaAPI.Request(fmt.Sprintf("tasks/%v", id), nil, task)
 	if err != nil {
+		fmt.Println("issue with task fetch")
 		return nil, err
 	}
 

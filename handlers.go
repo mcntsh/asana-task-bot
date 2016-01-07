@@ -12,13 +12,15 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&payload)
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Error"))
 	}
 
 	// Relay task
 	err = payload.RelayTask(slackUser)
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Error"))
 	}
 
 	// Set the response
