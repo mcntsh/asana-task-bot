@@ -7,6 +7,10 @@
 			"Rev": "97c70c3d5d5d7a30e336180e1a8b4b768a9b6857"
 		},
 		{
+			"ImportPath": "github.com/google/go-querystring/query",
+			"Rev": "2a60fc2ba6c19de80291203597d752e9ba58e4c0"
+		},
+		{
 			"ImportPath": "github.com/gorilla/context",
 			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
 		},
@@ -27,8 +31,16 @@
 			"Rev": "d9d9599b6aaf6a058cb7b1f48291ded2cbd13390"
 		},
 		{
+			"ImportPath": "github.com/tambet/go-asana/asana",
+			"Rev": "bfba414adc86629a1a16d852e8d3285cb73d3add"
+		},
+		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "1ade16a5450925b7496e1031938175d1f5d30d31"
+		},
+		{
+			"ImportPath": "golang.org/x/oauth2",
+			"Rev": "2baa8a1b9338cf13d9eeb27696d761155fa480be"
 		}
 	]
 }
