@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	Address string
-	APIKey  string
+	Address     string
+	SlackAPIKey string
+	AsanaAPIKey string
 }
 
 var (
@@ -21,7 +22,7 @@ func GetConfig() *Config {
 	config := &Config{}
 
 	config.Address = fmt.Sprintf(":%v", *portNumber)
-	config.APIKey = *slackAPIKey
+	config.SlackAPIKey = *slackAPIKey
 
 	return config
 }

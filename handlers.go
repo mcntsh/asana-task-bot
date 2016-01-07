@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	// "github.com/bluele/slack"
 	"encoding/json"
 	"net/http"
@@ -10,7 +9,7 @@ import (
 func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 	// slackUser := r.URL.Query().Get("slack_user")
 
-	// api := slack.New(config.APIKey)
+	// api := slack.New(config.SlackAPIKey)
 	// err := api.ChatPostMessage(slackUser, "Something happe1ned on Asana!", nil)
 	// if err != nil {
 	// 	w.WriteHeader(http.StatusInternalServerError)
@@ -24,7 +23,7 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	fmt.Printf("%+v", payload)
+	payload.RelayToSlack()
 
 	// Set the response
 	w.WriteHeader(http.StatusOK)
