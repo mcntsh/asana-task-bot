@@ -1,8 +1,6 @@
 package main
 
 import (
-	"asana-task-bot/middleware"
-	"asana-task-bot/routes"
 	"github.com/gorilla/mux"
 	"github.com/justinas/alice"
 	"net/http"
@@ -10,10 +8,9 @@ import (
 
 var (
 	appChain = alice.New(
-		middleware.Logging,
-		middleware.Cors,
-		middleware.SlackSecret,
-		middleware.SlackAPI,
+		MiddlewareLogging,
+		MiddlewareJSON,
+		MiddlewareCors,
 	)
 )
 
@@ -22,7 +19,7 @@ func Router() http.Handler {
 
 	// REST Handlers
 
-	r.Methods("POST").Path("/webhooks/recieve").Handler(appChain.ThenFunc(routes.RecieveWebhook))
+	r.Methods("POST").Path("/webhooks/recieve").Handler(appChain.ThenFunc(HandlerRecieveWebhook))
 
 	// Catch-all Handler
 
