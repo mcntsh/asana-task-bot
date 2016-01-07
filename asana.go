@@ -6,16 +6,6 @@ import (
 	"time"
 )
 
-const (
-	ASANA_TASK_ENDPOINT = "https://app.asana.com/api/1.0/tasks"
-	ASANA_USER_ENDPOINT = "https://app.asana.com/api/1.0/users"
-	ASANA_TASK_URL      = "https://app.asana.com/0/0"
-)
-
-// -----
-// Types
-// -----
-
 type Payload struct {
 	Events []*PayloadEvent `json:"events"`
 }
@@ -29,6 +19,16 @@ type PayloadEvent struct {
 	Parent    int       `json:"parent"`
 }
 
+type User struct {
+	Id    int        `json:"id"`
+	Name  string     `json:"name"`
+	Photo *UserPhoto `json:"photo"`
+}
+
+type UserPhoto struct {
+	Image string `json:"image_60x60"`
+}
+
 func (p *Payload) RelayTask(slackUser string) error {
 	for _, event := range p.Events {
 		if !event.IsRelayable() {
@@ -39,16 +39,6 @@ func (p *Payload) RelayTask(slackUser string) error {
 		if err != nil {
 			return err
 		}
-
-		// Get the assignee info
-		// if task.Assignee != nil {
-		// 	user, err := GetAsanaUser(task.Assignee.ID)
-		// 	if err != nil {
-		// 		return err
-		// 	}
-
-		// 	task.Assignee = user
-		// }
 
 		msgOpts := NewMessageOptions()
 
@@ -66,17 +56,6 @@ func (p *Payload) RelayTask(slackUser string) error {
 	return nil
 }
 
-func GetAsanaUser(id int64) (*asana.User, error) {
-	user := new(asana.User)
-
-	err := asanaAPI.Request(fmt.Sprintf("users/%v", id), nil, user)
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
 func GetAsanaTask(id int) (*asana.Task, error) {
 	task := new(asana.Task)
 
@@ -85,7 +64,7 @@ func GetAsanaTask(id int) (*asana.Task, error) {
 		return nil, err
 	}
 
-	return task, nil
+	return task, err
 }
 
 func (pe *PayloadEvent) IsRelayable() bool {
@@ -94,4 +73,12 @@ func (pe *PayloadEvent) IsRelayable() bool {
 	}
 
 	return true
+}
+
+func GetAsanaTaskProject(task *asana.Task) string {
+	if len(task.Projects) <= 0 {
+		return "Unassigned"
+	}
+
+	return task.Projects[0].Name
 }
