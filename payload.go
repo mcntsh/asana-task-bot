@@ -70,7 +70,7 @@ func (pe *PayloadEvent) GetTaskInfo() (*Task, error) {
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fmt.Sprintf("%s%b", ASANA_TASK_ENDPOINT, pe.Resource), nil)
 
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer: %v", config.AsanaAPIKey))
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", config.AsanaAPIKey))
 
 	res, err := client.Do(req)
 	if err != nil {
