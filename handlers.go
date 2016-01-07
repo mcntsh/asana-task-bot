@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/bluele/slack"
-	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 )
 
 func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
@@ -18,12 +18,12 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TEST
-	postData, err := ioutil.ReadAll(r.Body)
+	postData, err := httputil.DumpRequest(r, true)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(postData)
+	fmt.Println(string(postData))
 
 	// Set the response
 	w.WriteHeader(http.StatusOK)
