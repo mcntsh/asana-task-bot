@@ -15,7 +15,11 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	payload.RelayToSlack(slackUser)
+	// Relay task
+	err = payload.RelayTask(slackUser)
+	if err != nil {
+		panic(err)
+	}
 
 	// Set the response
 	w.WriteHeader(http.StatusOK)

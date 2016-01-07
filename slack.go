@@ -2,21 +2,19 @@ package main
 
 import (
 	"github.com/bluele/slack"
-	"reflect"
+	"github.com/tambet/go-asana/asana"
 )
 
 type MessageOpts struct {
 	Options *slack.ChatPostMessageOpt
 }
 
-func (m *MessageOpts) GenerateTask(t Resource) error {
-	reflected := reflect.ValueOf(t).Elem()
-
+func (m *MessageOpts) GenerateTask(task *asana.Task) error {
 	m.Options.Attachments = []*slack.Attachment{
 		&slack.Attachment{
-			Title:     reflected.FieldByName("Name").String(),
+			Title:     task.Name,
 			TitleLink: "https://asana.com",
-			Text:      reflected.FieldByName("Notes").String(),
+			Text:      task.Notes,
 		},
 	}
 
@@ -24,8 +22,7 @@ func (m *MessageOpts) GenerateTask(t Resource) error {
 }
 
 func SendSlackMessage(slackUser string, options *MessageOpts) error {
-	api := slack.New(config.SlackAPIKey)
-	err := api.ChatPostMessage(slackUser, "", options.Options)
+	err := slackAPI.ChatPostMessage(slackUser, "", options.Options)
 
 	if err != nil {
 		return err

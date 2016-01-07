@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
+	"github.com/tambet/go-asana/asana"
 	"time"
 )
 
@@ -30,57 +29,30 @@ type PayloadEvent struct {
 	Parent    int       `json:"parent"`
 }
 
-type ResourceData struct {
-	Data Resource `json:"data"`
-}
-
-type Task struct {
-	Id        int        `json:"id"`
-	CreatedAt time.Time  `json:"created_at"`
-	Name      string     `json:"name"`
-	Notes     string     `json:"notes"`
-	Projects  []*Project `json:"projects"`
-}
-
-type Project struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-}
-
-type User struct {
-	Id    int        `json:"id"`
-	Name  string     `json:"name"`
-	Photo *UserPhoto `json:"photo"`
-}
-
-type UserPhoto struct {
-	Image string `json:"image_60x60"`
-}
-
-type Resource interface {
-	GetId() int
-}
-
-// -----
-// Methods
-// -----
-
-func (p *Payload) RelayToSlack(slackUser string) error {
+func (p *Payload) RelayTask(slackUser string) error {
 	for _, event := range p.Events {
 		if !event.IsRelayable() {
 			continue
 		}
 
-		task := &ResourceData{Data: &Task{Id: event.Resource}}
-
-		err := task.GetResourceData(ASANA_TASK_ENDPOINT)
+		task, err := GetAsanaTask(event.Resource)
 		if err != nil {
-			panic(err)
+			return err
 		}
+
+		// Get the assignee info
+		// if task.Assignee != nil {
+		// 	user, err := GetAsanaUser(task.Assignee.ID)
+		// 	if err != nil {
+		// 		return err
+		// 	}
+
+		// 	task.Assignee = user
+		// }
 
 		msgOpts := NewMessageOptions()
 
-		err = msgOpts.GenerateTask(task.Data)
+		err = msgOpts.GenerateTask(task)
 		if err != nil {
 			return err
 		}
@@ -94,21 +66,26 @@ func (p *Payload) RelayToSlack(slackUser string) error {
 	return nil
 }
 
-func (t *Task) GetId() int { return t.Id }
-func (u *User) GetId() int { return u.Id }
+func GetAsanaUser(id int64) (*asana.User, error) {
+	user := new(asana.User)
 
-func (rd *ResourceData) GetResourceData(endpoint string) error {
-	res, err := sendRequest("GET", fmt.Sprintf("%s/%v", endpoint, rd.Data.GetId()))
+	err := asanaAPI.Request(fmt.Sprintf("users/%v", id), nil, user)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = json.NewDecoder(res.Body).Decode(&rd)
+	return user, nil
+}
+
+func GetAsanaTask(id int) (*asana.Task, error) {
+	task := new(asana.Task)
+
+	err := asanaAPI.Request(fmt.Sprintf("tasks/%v", id), nil, task)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return task, nil
 }
 
 func (pe *PayloadEvent) IsRelayable() bool {
@@ -117,19 +94,4 @@ func (pe *PayloadEvent) IsRelayable() bool {
 	}
 
 	return true
-}
-
-// -----
-// Helpers
-// -----
-
-func sendRequest(method, endpoint string) (*http.Response, error) {
-	client := &http.Client{}
-	req, _ := http.NewRequest(method, endpoint, nil)
-
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %v", config.AsanaAPIKey))
-
-	res, err := client.Do(req)
-
-	return res, err
 }
