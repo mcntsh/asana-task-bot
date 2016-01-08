@@ -68,11 +68,11 @@ func GetAsanaTask(id int) (*asana.Task, error) {
 }
 
 func (pe *PayloadEvent) IsRelayable() bool {
-	if pe.Type != "task" || pe.Action != "added" {
-		return false
+	if pe.Type == "task" && pe.Action == "added" {
+		return true
 	}
 
-	return true
+	return false
 }
 
 func GetAsanaTaskProject(task *asana.Task) string {
