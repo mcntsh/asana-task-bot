@@ -31,6 +31,7 @@ type UserPhoto struct {
 
 func (p *Payload) RelayTask(slackUser string) error {
 	for _, event := range p.Events {
+		fmt.Printf("## %s / %s", event.Type, event.Action)
 		if !event.IsRelayable() {
 			continue
 		}
