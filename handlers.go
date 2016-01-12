@@ -18,17 +18,16 @@ func HandlerRecieveWebhook(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&payload)
 	if err != nil {
 		// TODO: Handle this better
-		fmt.Println(err)
+		fmt.Printf("ERROR (todo):\n %v", err)
 	}
 
 	// Relay task
 	err = payload.RelayTask(slackUser)
 	if err != nil {
 		// TODO: Handle this better
-		fmt.Println(err)
+		fmt.Printf("ERROR (relay):\n %v", err)
 	}
 
 	// Set the response
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("OK"))
 }
