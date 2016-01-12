@@ -44,11 +44,13 @@ func (p *Payload) RelayTask(slackUser string) error {
 
 		err = msgOpts.GenerateTask(task)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
 		err = SendSlackMessage(slackUser, msgOpts)
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 	}
@@ -68,7 +70,6 @@ func GetAsanaTask(id int) (*asana.Task, error) {
 }
 
 func (pe *PayloadEvent) IsRelayable() bool {
-	fmt.Printf("\n\nPE:\n%v, %v\n\n", pe.Type, pe.Action)
 	if pe.Type == "task" && pe.Action == "added" {
 		return true
 	}
