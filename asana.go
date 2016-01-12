@@ -44,13 +44,11 @@ func (p *Payload) RelayTask(slackUser string) error {
 
 		err = msgOpts.GenerateTask(task)
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 
 		err = SendSlackMessage(slackUser, msgOpts)
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 	}
