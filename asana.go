@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const ASANA_TASK_URL = "https://app.asana.com/0/0"
+
 type Payload struct {
 	Events []*PayloadEvent `json:"events"`
 }
@@ -42,12 +44,7 @@ func (p *Payload) RelayTask(slackUser string) error {
 
 		msgOpts := NewMessageOptions()
 
-		err = msgOpts.GenerateTask(task)
-		if err != nil {
-			return err
-		}
-
-		err = SendSlackMessage(slackUser, msgOpts)
+		err = SendSlackMessage(slackUser, fmt.Sprintf("<%s/%v|%s>", ASANA_TASK_URL, task.ID, task.Name), msgOpts)
 		if err != nil {
 			return err
 		}

@@ -6,12 +6,6 @@ import (
 	"github.com/tambet/go-asana/asana"
 )
 
-const (
-	NEW_TASK_MESSAGE = "You have been assigned a new task:"
-
-	ASANA_TASK_URL = "https://app.asana.com/0/0"
-)
-
 type MessageOpts struct {
 	Options *slack.ChatPostMessageOpt
 }
@@ -38,9 +32,8 @@ func (m *MessageOpts) GenerateTask(task *asana.Task) error {
 	return nil
 }
 
-func SendSlackMessage(slackUser string, options *MessageOpts) error {
-	err := slackAPI.ChatPostMessage(slackUser, "", options.Options)
-
+func SendSlackMessage(slackUser string, body string, options *MessageOpts) error {
+	err := slackAPI.ChatPostMessage(slackUser, body, options.Options)
 	if err != nil {
 		return err
 	}
